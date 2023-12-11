@@ -1,0 +1,6 @@
+pymongo
+pandas
+selenium
+requests
+flask
+beautifulsoup4
