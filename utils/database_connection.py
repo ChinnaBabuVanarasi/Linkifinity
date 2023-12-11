@@ -61,5 +61,3 @@ def get_collection(collection_name: str):
                     Please check your collection name and try again."""
     return db_connection[db_collection]
 
-# col = get_collection("get_chapters")
-# print([r for r in col.find({})][0])
