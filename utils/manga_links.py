@@ -1,10 +1,7 @@
 import pandas as pd
 
+from utils.common_functions import delete_collection_records
 from utils.database_connection import get_collection
-
-
-def delete_collection_records(collection):
-    collection.delete_many({})
 
 
 def insert_links_from_csv(filepath, collection):
@@ -29,4 +26,4 @@ def insert_links_from_csv(filepath, collection):
 collection_name = get_collection("get_manga_links")
 fileinput = "/media/charan/code/Myprojects/PythonProjects/Linkifinity/csvfiles/links.csv"
 insert_links_from_csv(fileinput, collection=collection_name)
-# delete_collection_records(collection_name)
+delete_collection_records(collection_name)

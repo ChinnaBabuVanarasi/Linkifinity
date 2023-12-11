@@ -3,7 +3,7 @@ import time
 
 import requests
 
-from utils.common_functions import get_page_source, setup_logging
+from utils.common_functions import get_page_source, setup_logging, delete_collection_records
 from utils.database_connection import get_collection, close_database_connection
 
 IMAGE_CONSTANT = "/9j/4QVfRXhpZgAASUkqAAgAAAAMAAABAwABAAAALAEAAAEBAwABAAAAwgEAAAIBAwADAAAAngAAAAYBAwABAAAAAgAAABIBAwAB"
@@ -91,7 +91,7 @@ def read_urls_from_db():
 
 def insert_data(collection_var: str):
     manga_details = extract_details_from_urls()
-    logfile = "latest_chapter_insertion"
+    logfile = "manga_details"
     logger = setup_logging(filename=logfile)
     collection = get_collection(collection_var)
     logs = []
@@ -113,4 +113,5 @@ def insert_data(collection_var: str):
 
 if __name__ == "__main__":
     collection_name = "get_manga_details"
+    # delete_collection_records(collection_name)
     insert_data(collection_name)
