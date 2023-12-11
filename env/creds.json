@@ -1,0 +1,10 @@
+{
+    "PASSWORD": "abc6921",
+    "CLUSTER": "automations",
+    "DATABASE": "manga_updates",
+    "MANGALINKS": "MangaLinks",
+    "MANGAIMAGES":"MangaImagesDB",
+    "CHAPTERSDB":"MangaChapters",
+    "MANGADETAILS":"MangaDetails"
+}
+
