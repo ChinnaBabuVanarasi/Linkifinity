@@ -9,8 +9,8 @@ from selenium.webdriver.chrome.options import Options
 from utils.database_connection import get_collection
 
 
-def delete_collection_records():
-    collection_name = get_collection("get_manga_details")
+def delete_collection_records(name):
+    collection_name = get_collection(name)
     collection_name.delete_many({})
 
 
