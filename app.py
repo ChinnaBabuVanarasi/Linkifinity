@@ -4,9 +4,12 @@ from utils.database_connection import get_collection
 app = Flask(__name__)
 
 links_collection = get_collection("get_manga_links")
+chapters_collection = get_collection("get_chapters")
+details_collection = get_collection("get_manga_details")
 
 
-@app.route("/")
+####################### API Routes for MangaLinks DB ##############################
+@app.route("/links")
 def get_links():
     records = [record for record in links_collection.find({}, {"_id": False})]
     return records
@@ -47,6 +50,52 @@ def show_record(title):
     else:
         return {"response": f"No record found having title: {title}."}
 
+
+##################################################################################
+
+
+####################### API Routes for MangaDetailsDB ############################
+@app.route("/details")
+def get_details():
+    details = details_collection.find({}, {"_id": False})
+    details_view = []
+    for detail in details:
+        title = detail["Title"]
+        image = detail["Image"]
+        url = detail["Manga_url"]
+        details_view.append({"Title": title, "Image": image, "Manga_url": url})
+
+    return details_view
+
+
+######################################################################################
+
+
+####################### API Routes for MangaChaptersDB ###############################
+
+
+@app.route("/chapters")
+def get_chapters():
+    chapters = chapters_collection.find({}, {"_id": False})
+    chapters_view = []
+    for chapter in chapters:
+        title = chapter["Title"]
+        image = chapter["Image"]
+        url = chapter["Manga_url"]
+        chapters = chapter["Latest_chapters"]
+        chapters_view.append(
+            {"Title": title, "Image": image, "Manga_url": url, "Chapters": chapters}
+        )
+    return chapters_view
+
+
+@app.route("/chapter/<string:title>")
+def get_chapter(title):
+    chapter = chapters_collection.find_one({'Title':title}, {"_id": False})
+    return [chapter]
+
+
+#######################################################################################
 
 if __name__ == "__main__":
     app.run(debug=True)
