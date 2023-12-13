@@ -78,7 +78,7 @@ def mongodb_insertion(manga_details, collection_var, logfile):
                 else:
                     logs.append(
                         f"""No update needed for '{manga['Title']}' in MongoDB. Local: {local_latest_chapter},
-                         MongoDB: {mongodb_latest_chapter}"""
+                        MongoDB: {mongodb_latest_chapter}"""
                     )
             else:
                 collection.insert_one(manga)
