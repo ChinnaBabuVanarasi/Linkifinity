@@ -3,7 +3,11 @@ import time
 
 import requests
 
-from utils.common_functions import get_page_source, setup_logging, delete_collection_records
+from utils.common_functions import (
+    get_page_source,
+    setup_logging,
+    delete_collection_records,
+)
 from utils.database_connection import get_collection, close_database_connection
 
 IMAGE_CONSTANT = "/9j/4QVfRXhpZgAASUkqAAgAAAAMAAABAwABAAAALAEAAAEBAwABAAAAwgEAAAIBAwADAAAAngAAAAYBAwABAAAAAgAAABIBAwAB"
@@ -49,7 +53,7 @@ def get_image(soup, title):
 
         b_image = update_no_image_records(en_image, title)
 
-        return {'image': image_url, 'binary_image': b_image}
+        return {"image": image_url, "binary_image": b_image}
     except Exception as e:
         print("An error occurred:", str(e))
 
@@ -60,8 +64,8 @@ def extract_meta_data(url):
     Image_data = get_image(soup, title)
     details = {
         "Title": title,
-        "Image": Image_data['image'],
-        "Binary_Image": Image_data['binary_image'],
+        "Image": Image_data["image"],
+        "Binary_Image": Image_data["binary_image"],
         "Manga_url": url,
     }
     return details
@@ -82,11 +86,12 @@ def read_urls_from_db():
         manga_links_collection = get_collection("get_manga_links")
         urls = [record["url"] for record in manga_links_collection.find({})]
         # urls = ["https://kunmanga.com/manga/the-beast-tamed-by-the-evil-woman/"]
-        close_database_connection()
         return urls
     except Exception as e:
         print(f"Error occurred while reading URLs from the database: {str(e)}")
         return []
+    finally:
+        close_database_connection()
 
 
 def insert_data(collection_var: str):
@@ -96,16 +101,16 @@ def insert_data(collection_var: str):
     collection = get_collection(collection_var)
     logs = []
     for manga in manga_details:
-        if not collection.find_one({"Title": manga["Title"], "Manga_url": manga["Manga_url"]}):
-            logs.append(
-                f"No matching document found in MongoDB for '{manga['Title']}'"
-            )
+        if not collection.find_one(
+            {"Title": manga["Title"], "Manga_url": manga["Manga_url"]}
+        ):
+            logs.append(f"No matching document found in MongoDB for '{manga['Title']}'")
             logs.append(f"New document inserted for '{manga['Title']}'")
 
         collection.update_one(
             {"Title": manga["Title"], "Manga_url": manga["Manga_url"]},
             {"$set": manga},
-            upsert=True
+            upsert=True,
         )
     for log in logs:
         logger.info(log)

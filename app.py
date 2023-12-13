@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 from utils.database_connection import get_collection
 
 app = Flask(__name__)
@@ -14,7 +14,6 @@ def get_links():
 
 @app.route("/add/<path:link>", methods=["GET"])
 def add_link(link):
-    print(link)
     title = link.split("/")[-2].replace("-", " ")
     if title[-2:] == "01":
         title = title.replace("01", "")
@@ -25,9 +24,9 @@ def add_link(link):
     doc = links_collection.find_one(data)
     if not doc:
         links_collection.insert_one(data)
-        return {"response":f"Successfully inserted link: {data}"}
+        return {"response": f"Successfully inserted link: {data}"}
     else:
-        return {"response":f"Not inserted, {link} already present in mangalinks DB."}
+        return {"response": f"Not inserted, {link} already present in mangalinks DB."}
 
 
 @app.route("/delete/<string:title>")
@@ -36,6 +35,15 @@ def delete_link(title):
     if record:
         links_collection.delete_one(record)
         return {"response": f"successfully deleted record having title: {title}."}
+    else:
+        return {"response": f"No record found having title: {title}."}
+
+
+@app.route("/link/<string:title>")
+def show_record(title):
+    record = links_collection.find_one({"Title": title}, {"_id": False})
+    if record:
+        return {"response": [record]}
     else:
         return {"response": f"No record found having title: {title}."}
 
