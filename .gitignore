@@ -1,8 +1,4 @@
 linkvenv/
-/.idea/inspectionProfiles/Project_Default.xml
-/.idea/workspace.xml
-/.vscode/settings.json
-/.idea/csv-editor.xml
-/.idea/misc.xml
-/.idea/inspectionProfiles/profiles_settings.xml
-/.idea/vcs.xml
+.idea/
+__pycache__
+.vscode
