@@ -18,7 +18,7 @@ COLLECTIONS = {
 def read_credentials():
     if not hasattr(read_credentials, "cached_credentials"):
         credentials_path = os.path.join(
-            os.path.dirname(__file__), "..", "env", "creds.json")
+            os.path.dirname(__file__), ".", "env", "creds.json")
         with open(credentials_path, "r") as f:
             read_credentials.cached_credentials = json.load(f)
     return read_credentials.cached_credentials
