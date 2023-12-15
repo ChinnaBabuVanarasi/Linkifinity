@@ -76,7 +76,6 @@ def chapter_details():
         title = detail["Title"]
         image = detail["Image"]
         url = detail["Manga_url"]
-        Binary_image = detail["Binary_Image"]
         chapters = detail["Latest_chapters"]
         Latest_chapters = chapters if len(chapters) <= 2 else chapters[:3]
         details_view.append(
@@ -85,7 +84,7 @@ def chapter_details():
                 "Image": image,
                 "Manga_url": url,
                 "Chapters": Latest_chapters,
-                "Binary_image": Binary_image,
+                "Binary_image": "Too Long to Show Here, If you want to use,Use 'Binary_Image' as key",
             }
         )
 
@@ -108,7 +107,13 @@ def get_chapters():
         url = chapter["Manga_url"]
         chapters = chapter["Latest_chapters"]
         chapters_view.append(
-            {"Title": title, "Image": image, "Manga_url": url, "Chapters": chapters}
+            {
+                "Title": title,
+                "Image": image,
+                "Manga_url": url,
+                "Chapters": chapters,
+                "Binary_Image": "Too Long to Show Here, If you want to use,Use 'Binary_Image' as key",
+            }
         )
     return chapters_view
 
