@@ -8,6 +8,11 @@ chapters_collection = get_collection("get_chapters")
 details_collection = get_collection("get_manga_details")
 
 
+@app.route("/")
+def home():
+    return {"response": "Welcome to Manga API."}
+
+
 ####################### API Routes for MangaLinks DB ##############################
 @app.route("/links")
 def get_links():
@@ -127,4 +132,4 @@ def get_chapter(title):
 #######################################################################################
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0',port=5000)
+    app.run(host="0.0.0.0", port=5000)
