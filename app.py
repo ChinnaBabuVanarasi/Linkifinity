@@ -68,6 +68,30 @@ def get_details():
     return details_view
 
 
+@app.route("/chapter_details")
+def chapter_details():
+    chapter_details = chapters_collection.find({}, {"_id": False})
+    details_view = []
+    for detail in chapter_details:
+        title = detail["Title"]
+        image = detail["Image"]
+        url = detail["Manga_url"]
+        Binary_image = detail["Binary_Image"]
+        chapters = detail["Latest_chapters"]
+        Latest_chapters = chapters if len(chapters) <= 2 else chapters[:3]
+        details_view.append(
+            {
+                "Title": title,
+                "Image": image,
+                "Manga_url": url,
+                "Chapters": Latest_chapters,
+                "Binary_image": Binary_image,
+            }
+        )
+
+    return details_view
+
+
 ######################################################################################
 
 
@@ -91,7 +115,7 @@ def get_chapters():
 
 @app.route("/chapter/<string:title>")
 def get_chapter(title):
-    chapter = chapters_collection.find_one({'Title':title}, {"_id": False})
+    chapter = chapters_collection.find_one({"Title": title}, {"_id": False})
     return [chapter]
 
 
