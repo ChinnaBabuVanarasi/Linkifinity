@@ -77,7 +77,6 @@ def get_collection(collection_name: str):
     db_connection = create_database_connection()
     collection = COLLECTIONS.get(collection_name)
     db_collection = credentials.get(collection)
-    print(db_collection)
     if not db_collection:
         return f"""No Collection Found with the name '{collection_name}'. 
                 Please check your collection name and try again."""
