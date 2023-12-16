@@ -1,13 +1,22 @@
 from typing import Dict, List
 import re
 
-from utils.common_functions import (
-    get_page_source,
-    mongodb_insertion,
-    setup_logging,
-    delete_collection_records
-)
-from utils.database_connection import get_collection
+try:
+    from common_functions import (
+        get_page_source,
+        setup_logging,
+        delete_collection_records,
+        mongodb_insertion,
+    )
+    from database_connection import get_collection, close_database_connection
+except ModuleNotFoundError:
+    from utils.common_functions import (
+        get_page_source,
+        setup_logging,
+        delete_collection_records,
+        mongodb_insertion,
+    )
+    from utils.database_connection import get_collection, close_database_connection
 
 logger = setup_logging(filename="chapter_details")
 
@@ -32,8 +41,8 @@ def get_current_chapter(url):
     try:
         if not isinstance(url, str) or not url.startswith("http"):
             raise ValueError("Invalid URL")
-        chapter_collection = get_collection("get_chapters")
-        doc = chapter_collection.find_one({"Manga_url": url}, {"Latest_chapters": 1})
+        chapter_collection = get_collection("get_manga_chapters")
+        doc = chapter_collection.find_one({"Manga_url": url}, {"Latest_chapters": True})
         if doc:
             return doc[0]["Latest_chapters"][0]["chapter_num"]
         return 0
@@ -100,7 +109,9 @@ def extract_details_from_url() -> List[Dict[str, str]]:
             if not title or not image or not binary_image:
                 print(f"Missing data for record: {record}")
                 continue
-            chapter_details: List[Dict[str, str]] = get_chapters(url, current_chapter, title)
+            chapter_details: List[Dict[str, str]] = get_chapters(
+                url, current_chapter, title
+            )
             details: Dict[str, str] = {
                 "Title": title,
                 "Image": image,
@@ -131,12 +142,13 @@ def insert_data(collection_var: str):
         mongodb_insertion(
             manga_details=manga_details,
             collection_var=collection_var,
-            logfile="manga_details")
+            logfile="manga_details",
+        )
     except Exception as e:
         logger.exception(f"Error occurred in insert_data: {e}")
 
 
 if __name__ == "__main__":
-    collection_name = "get_chapters"
+    collection_name = "get_manga_chapters"
     # delete_collection_records(collection_name)
     insert_data(collection_name)
