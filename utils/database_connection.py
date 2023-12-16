@@ -10,8 +10,8 @@ global client
 COLLECTIONS = {
     "get_manga_links": "MANGALINKS",
     "get_manga_images": "MANGAIMAGES",
-    "get_chapters": "CHAPTERSDB",
-    "get_manga_details": "MANGADETAILS"
+    "get_manga_chapters": "CHAPTERSDB",
+    "get_manga_details": "MANGADETAILS",
 }
 
 
@@ -60,4 +60,3 @@ def get_collection(collection_name: str):
         return f"""No Collection Found with the name '{collection_name}'. 
                     Please check your collection name and try again."""
     return db_connection[db_collection]
-
