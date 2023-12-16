@@ -1,6 +1,8 @@
 from typing import Dict, List
 import re
 
+from colorama import Fore
+
 try:
     from common_functions import (
         get_page_source,
@@ -18,7 +20,11 @@ except ModuleNotFoundError:
     )
     from utils.database_connection import get_collection, close_database_connection
 
-logger = setup_logging(filename="chapter_details")
+chapter_details_logger = setup_logging(filename="chapter_details_logger")
+chapter_urls_logger = setup_logging(filename="chapter_urls_logger")
+chapter_insert_logger = setup_logging(filename="chapter_insert_logger")
+
+# get latest chapter
 
 
 def get_latest_chapter(chapter):
@@ -43,11 +49,14 @@ def get_current_chapter(url):
             raise ValueError("Invalid URL")
         chapter_collection = get_collection("get_manga_chapters")
         doc = chapter_collection.find_one({"Manga_url": url}, {"Latest_chapters": True})
+        # print(doc)
         if doc:
-            return doc[0]["Latest_chapters"][0]["chapter_num"]
+            return doc["Latest_chapters"][0]["chapter_num"]
         return 0
     except Exception as e:
-        logger.exception(f"Error occurred while interacting with the database: {e}")
+        chapter_details_logger.exception(
+            f"Error occurred while interacting with the database: {e}"
+        )
         return 0
 
 
@@ -80,6 +89,7 @@ def get_chapters(manga_url, current_chapter, manga_title) -> list:
                 f"No new chapters for '{manga_title}': {current_chapter} -> {latest_chapter}"
             )
         else:
+            # print(Fore.RED, f"{current_chapter} -> {latest_chapter}")
             logs.append(
                 f"New chapters for '{manga_title}': {current_chapter} -> {latest_chapter}"
             )
@@ -87,8 +97,13 @@ def get_chapters(manga_url, current_chapter, manga_title) -> list:
         chapter_details.append(
             {"chapter_num": latest_chapter, "chapter_url": chapter_url}
         )
-    for log in logs:
-        logger.info(log)
+    # for log in logs:
+    try:
+        chapter_details_logger.info(logs[-1].strip())
+    except IndexError as e:
+        chapter_urls_logger.exception(
+            f"Error occurred in extract_details_from_url: {e}"
+        )
     return chapter_details
 
 
@@ -101,7 +116,8 @@ def extract_details_from_url() -> List[Dict[str, str]]:
             if not isinstance(url, str) or not url.startswith("http"):
                 print(f"Invalid URL: {url}")
                 continue
-            print(f"{i}: {url}")
+            print(Fore.GREEN, f"{i}: {url}")
+            # TODO -> NEED TO REMOVE - 3 IN BELOW AND INSERT FUNCTION
             current_chapter = get_current_chapter(url)
             title: str = record["Title"]
             image: str = record["Image"]
@@ -112,6 +128,7 @@ def extract_details_from_url() -> List[Dict[str, str]]:
             chapter_details: List[Dict[str, str]] = get_chapters(
                 url, current_chapter, title
             )
+            # print(Fore.RED, f"{current_chapter}->{chapter_details[0]['chapter_num']}")
             details: Dict[str, str] = {
                 "Title": title,
                 "Image": image,
@@ -120,9 +137,12 @@ def extract_details_from_url() -> List[Dict[str, str]]:
                 "Manga_url": url,
             }
             manga_details.append(details)
+        # print(manga_details)
         return manga_details
     except Exception as e:
-        logger.exception(f"Error occurred in extract_details_from_url: {e}")
+        chapter_urls_logger.exception(
+            f"Error occurred in extract_details_from_url: {e}"
+        )
         return []
 
 
@@ -142,10 +162,10 @@ def insert_data(collection_var: str):
         mongodb_insertion(
             manga_details=manga_details,
             collection_var=collection_var,
-            logfile="manga_details",
+            insert_logger=chapter_insert_logger,
         )
     except Exception as e:
-        logger.exception(f"Error occurred in insert_data: {e}")
+        chapter_insert_logger.exception(f"Error occurred in insert_data: {e}")
 
 
 if __name__ == "__main__":
