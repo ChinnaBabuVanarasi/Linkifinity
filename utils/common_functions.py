@@ -6,7 +6,13 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
-from utils.database_connection import get_collection
+try:
+    from utils.database_connection import get_collection
+except ModuleNotFoundError:
+    from database_connection import get_collection
+
+
+# Delete all records from a collection
 
 
 def delete_collection_records(name):
