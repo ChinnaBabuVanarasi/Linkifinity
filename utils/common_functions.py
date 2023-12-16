@@ -16,8 +16,8 @@ except ModuleNotFoundError:
 # Delete all records from a collection
 
 
-def delete_collection_records(name):
-    collection_name = get_collection(name)
+def delete_collection_records(collection_name):
+    # collection_name = get_collection(name)
     collection_name.delete_many({})
 
 
