@@ -8,12 +8,63 @@ chapters_collection = get_collection("get_chapters")
 details_collection = get_collection("get_manga_details")
 
 
+def find_record(collection, query, projection={"_id": False}):
+    record = collection.find_one(query, projection)
+    if record:
+        return record
+    else:
+        return None
+
+
+def insert_record(collection, data):
+    collection.insert_one(data)
+
+
+def delete_record(collection, filter):
+    return collection.delete_one(filter)
+
+
+def add_link(link):
+    split_link = link.split("/")
+    title = split_link[-2].replace("-", " ")
+    if title[-2:] == "01":
+        title = title.replace("01", "")
+    else:
+        title = title
+    site = split_link[2]
+    data = {"Title": title, "Site": site, "url": link}
+    doc = find_record(links_collection, data)
+    if not doc:
+        insert_record(links_collection, data)
+        return {"response": f"Successfully inserted link: {data}"}
+    else:
+        return {"response": f"Not inserted, {link} already present in mangalinks DB."}
+
+
+def delete_link(title):
+    query = {"$or": [{"Title": title}, {"url": title}]}
+    result = delete_record(links_collection, query)
+    if result.deleted_count > 0:
+        return {"response": f"successfully deleted record having title: {title}."}
+    else:
+        return {"response": f"No record found having title: {title}."}
+
+
+def get_record(value):
+    query = {"$or": [{"Title": value}, {"url": value}]}
+    projection = {"_id": False}
+    record = find_record(links_collection, query, projection)
+    if record:
+        return record
+    else:
+        return f"No record found having title: {value}."
+
+
 @app.route("/")
 def home():
     return {"response": "Welcome to Manga API."}
 
 
-####################### API Routes for MangaLinks DB ##############################
 @app.route("/links")
 def get_links():
     records = [record for record in links_collection.find({}, {"_id": False})]
@@ -21,45 +72,24 @@ def get_links():
 
 
 @app.route("/add/<path:link>", methods=["GET"])
-def add_link(link):
-    title = link.split("/")[-2].replace("-", " ")
-    if title[-2:] == "01":
-        title = title.replace("01", "")
-    else:
-        title = title
-    site = link.split("/")[2]
-    data = {"Title": title, "Site": site, "url": link}
-    doc = links_collection.find_one(data)
-    if not doc:
-        links_collection.insert_one(data)
-        return {"response": f"Successfully inserted link: {data}"}
-    else:
-        return {"response": f"Not inserted, {link} already present in mangalinks DB."}
+def add_link_route(link):
+    return add_link(link)
 
 
-@app.route("/delete/<string:title>")
-def delete_link(title):
-    record = links_collection.find_one({"Title": title})
-    if record:
-        links_collection.delete_one(record)
-        return {"response": f"successfully deleted record having title: {title}."}
-    else:
-        return {"response": f"No record found having title: {title}."}
+@app.route("/delete/<path:title>")
+def delete_link_route(title):
+    return delete_link(title)
 
 
-@app.route("/link/<string:title>")
+@app.route("/link/<path:title>", methods=["GET"])
 def show_record(title):
-    record = links_collection.find_one({"Title": title}, {"_id": False})
+    record = get_record(title)
     if record:
         return {"response": [record]}
     else:
-        return {"response": f"No record found having title: {title}."}
+        return {f"response: {record}"}
 
 
-##################################################################################
-
-
-####################### API Routes for MangaDetailsDB ############################
 @app.route("/details")
 def get_details():
     details = details_collection.find({}, {"_id": False})
@@ -96,12 +126,6 @@ def chapter_details():
     return details_view
 
 
-######################################################################################
-
-
-####################### API Routes for MangaChaptersDB ###############################
-
-
 @app.route("/chapters")
 def get_chapters():
     chapters = chapters_collection.find({}, {"_id": False})
@@ -128,8 +152,6 @@ def get_chapter(title):
     chapter = chapters_collection.find_one({"Title": title}, {"_id": False})
     return [chapter]
 
-
-#######################################################################################
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
