@@ -49,7 +49,7 @@ def home():
 
 
 # ?  ############# MANGALINKS API ENDPOINTS ############
-# ! View All Links
+# ! View All Links data
 @app.route("/links")
 def get_all_records():
     links_collection = get_collection("get_manga_links")
@@ -57,7 +57,7 @@ def get_all_records():
     return records
 
 
-# ! View Single Record(Given Url/Title)
+# ! View Single link data for Given Url/Title
 @app.route("/links/<path:title>", methods=["GET"])
 def get_record_by_title_or_url(title):
     links_collection = get_collection("get_manga_links")
@@ -66,6 +66,18 @@ def get_record_by_title_or_url(title):
         return {"response": record}
     else:
         return {f"response: {record}"}
+
+
+# # ! Delete link record data for given Url/Title
+# @app.route("/links/delete/<path:title>", methods=["GET"])
+# def delete_record_by_title_or_url(title):
+#     links_collection = get_collection("get_manga_links")
+#     record = get_record(title, links_collection)
+#     if record:
+#         links_collection.delete_one(record)
+#         return {"response": f"Successfully deleted the {record}"}
+#     else:
+#         return {"response": f"No record found with the given {title}"}
 
 
 # ?  ############# MANGADETAILS API ENDPOINTS ###########
@@ -78,7 +90,7 @@ def get_all_chapters():
     return records
 
 
-# ! View Single Record(Given Url/Title)
+# ! View Single Chapter for Given Url/Title
 @app.route("/chapters/<path:title>/", methods=["GET"])
 def get_chapter_by_title_or_url(title):
     chapters_collection = get_collection("get_manga_chapters")
