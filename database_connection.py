@@ -10,7 +10,7 @@ global client
 COLLECTIONS = {
     "get_manga_links": "MANGALINKS",
     "get_manga_images": "MANGAIMAGES",
-    "get_chapters": "CHAPTERSDB",
+    "get_manga_chapters": "CHAPTERSDB",
     "get_manga_details": "MANGADETAILS",
 }
 
