@@ -1,9 +1,10 @@
 import re
 from flask import Flask
 from database_connection import get_collection
+from flask_cors import CORS
 
 app = Flask(__name__)
-
+CORS(app)
 
 # ! ############## REUSABLE DB FUNCTIONS ##############
 def find_record(collection, query, projection={"_id": False}):
