@@ -1,11 +1,13 @@
 import re
+from colorama import Fore
 import pandas as pd
 
+
 try:
-    from utils.common_functions import delete_collection_records
+    from utils.common_functions import delete_collection_records, get_page_source
     from utils.database_connection import get_collection
 except ModuleNotFoundError:
-    from common_functions import delete_collection_records
+    from common_functions import delete_collection_records, get_page_source
     from database_connection import get_collection
 
 import pandas as pd
@@ -18,29 +20,20 @@ def insert_links_from_csv(filepath, collection):
     bulk_operations = []
     for i, row in df.iterrows():
         link = row["links"]
-        path_segments = link.split("/")
-
-        # Extract title and site
-        title_var = re.sub(r"[^a-zA-z0-9]", " ", path_segments[-2])
-        title_var = title_var.replace("01", "") if title_var[-2:] == "01" else title_var
-
-        title = " ".join(
-            [
-                word.capitalize() if len(word) > 1 else word
-                for word in title_var.split(" ")
-            ]
-        )
-
-        site = path_segments[2]
+        soup = get_page_source(link)
+        title = soup.find("div", class_="post-title").find("h1").text.strip()
+        site = link.split("/")[2]
 
         data = {"Title": title, "Site": site, "Manga_url": link}
         # Check existence of the title in the collection
-        existing_doc = collection.find_one({"Title": title})
+        existing_doc = collection.find_one(
+            {"$and": [{"Title": title}, {"Manga_url": link}]}
+        )
         if not existing_doc:
             bulk_operations.append(data)
-            print(f"Inserted: {i}, {link}")
+            print(Fore.RED, f"Inserted: {i}, {link}")
         else:
-            print(f"Not Inserted: {link}, {title}")
+            print(Fore.GREEN, f"{link} : {title} Already exists.")
 
     if bulk_operations:
         collection.insert_many(bulk_operations)
