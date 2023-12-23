@@ -104,7 +104,7 @@ def extract_details_from_urls():
 def read_urls_from_db():
     try:
         manga_links_collection = get_collection("get_manga_links")
-        urls = [record["url"] for record in manga_links_collection.find({})]
+        urls = [record["Manga_url"] for record in manga_links_collection.find({})]
         # urls = ["https://kunmanga.com/manga/the-beast-tamed-by-the-evil-woman/"]
         return urls
     except Exception as e:
