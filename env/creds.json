@@ -5,6 +5,7 @@
     "MANGALINKS": "MangaLinks",
     "MANGAIMAGES":"MangaImagesDB",
     "CHAPTERSDB":"MangaChapters",
-    "MANGADETAILS":"MangaDetails"
+    "MANGADETAILS":"MangaDetails",
+    "CSVLINKS":"CsvLinks"
 }
 
