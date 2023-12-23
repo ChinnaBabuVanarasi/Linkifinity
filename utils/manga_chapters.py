@@ -117,7 +117,6 @@ def extract_details_from_url() -> List[Dict[str, str]]:
                 print(f"Invalid URL: {url}")
                 continue
             print(Fore.GREEN, f"{i}: {url}")
-            # TODO -> NEED TO REMOVE - 3 IN BELOW AND INSERT FUNCTION
             current_chapter = get_current_chapter(url)
             title: str = record["Title"]
             image: str = record["Image"]

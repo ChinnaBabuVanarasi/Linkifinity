@@ -1,5 +1,6 @@
 linkvenv/
 .idea/
 __pycache__
-.vscode
+.vscode/
 extras.py
+csvfiles/
