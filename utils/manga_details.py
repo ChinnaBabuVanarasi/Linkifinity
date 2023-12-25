@@ -9,14 +9,14 @@ try:
         setup_logging,
         delete_collection_records,
     )
-    from database_connection import get_collection, close_database_connection
+    from database_connection import get_collection
 except ModuleNotFoundError:
     from utils.common_functions import (
         get_page_source,
         setup_logging,
         delete_collection_records,
     )
-    from utils.database_connection import get_collection, close_database_connection
+    from utils.database_connection import get_collection
 
 IMAGE_CONSTANT = "/9j/4QVfRXhpZgAASUkqAAgAAAAMAAABAwABAAAALAEAAAEBAwABAAAAwgEAAAIBAwADAAAAngAAAAYBAwABAAAAAgAAABIBAwAB"
 
@@ -66,7 +66,7 @@ def get_image(soup, title):
         print("An error occurred:", str(e))
 
 
-def extract_meta_data(url):
+def extract_meta_data(url,date_added):
     soup = get_page_source(url)
     title = soup.find("div", class_="post-title").find("h1").text.strip()
     Image_data = get_image(soup, title)
@@ -75,6 +75,7 @@ def extract_meta_data(url):
         "Image": Image_data["image"],
         "Binary_Image": Image_data["binary_image"],
         "Manga_url": url,
+        "Date_added":date_added
     }
     return details
 
@@ -87,24 +88,27 @@ def get_record(collection_name, query, projection={"_id": False}):
 def extract_details_from_urls():
     urls = read_urls_from_db()
     manga_details = []
-    for i, url in enumerate(urls):
+    for i, record in enumerate(urls):
         try:
+            url = record["Manga_url"]
+            date_added = record["Date_added"]
             url_record = get_record("get_manga_details", {"Manga_url": url})
             if not url_record:
                 print(Fore.RED, i, ": ", url)
-                manga_details.append(extract_meta_data(url))
+                manga_details.append(extract_meta_data(url, date_added))
                 time.sleep(1)
             else:
                 print(Fore.GREEN, f"{i}: {url} is already present in the database.")
         except Exception as e:
-            print(f"Error occurred while extracting details for {url}: {str(e)}")
+            print(Fore.MAGENTA,f"Error occurred while extracting details for {url}: {str(e)}")
     return manga_details
 
 
 def read_urls_from_db():
     try:
         manga_links_collection = get_collection("get_manga_links")
-        urls = [record["Manga_url"] for record in manga_links_collection.find({})]
+        urls = list(manga_links_collection.find({}))
+        # for testing
         # urls = ["https://kunmanga.com/manga/the-beast-tamed-by-the-evil-woman/"]
         return urls
     except Exception as e:
@@ -112,28 +116,32 @@ def read_urls_from_db():
         return []
 
 
-def insert_data(collection_var: str):
+def insert_data(details_collection):
     manga_details = extract_details_from_urls()
     logfile = "manga_meta_details"
     logger = setup_logging(filename=logfile)
-    collection = get_collection(collection_var)
     logs = []
     for manga in manga_details:
-        if not collection.find_one(
+        if not details_collection.find_one(
             {"Title": manga["Title"], "Manga_url": manga["Manga_url"]}
         ):
             logs.append(f"New Manga document Inserted in MongoDB -> '{manga['Title']}'")
-        collection.update_one(
-            {"Title": manga["Title"], "Manga_url": manga["Manga_url"]},
+        details_collection.update_one(
+            {
+                "Title": manga["Title"],
+                "Manga_url": manga["Manga_url"],
+                "Date_added": manga["Date_added"],
+            },
             {"$set": manga},
             upsert=True,
         )
-
     for log in logs:
         logger.info(log)
 
 
 if __name__ == "__main__":
-    collection_name = "get_manga_details"
+    details_collection = get_collection("get_manga_details")
+    insert_data(details_collection)
+
+    # collection_name = get_collection("get_manga_details")
     # delete_collection_records(collection_name)
-    insert_data(collection_name)
