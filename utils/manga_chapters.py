@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Dict, List
 import re
 
@@ -80,7 +81,7 @@ def get_chapters(manga_url, current_chapter, manga_title) -> list:
             else:
                 pass
 
-    chapter_details = []
+    chapter_meta_details = []
     logs = []
     for chapter_element in chapters[: chapter_index + 1]:
         latest_chapter = get_latest_chapter(chapter_element)
@@ -94,8 +95,16 @@ def get_chapters(manga_url, current_chapter, manga_title) -> list:
                 f"New chapters for '{manga_title}': {current_chapter} -> {latest_chapter}"
             )
         chapter_url = chapter_element.find("a")["href"]
-        chapter_details.append(
-            {"chapter_num": latest_chapter, "chapter_url": chapter_url}
+        current_datetime = datetime.now()
+        chapter_added = datetime(
+            current_datetime.year, current_datetime.month, current_datetime.day
+        )
+        chapter_meta_details.append(
+            {
+                "chapter_num": latest_chapter,
+                "chapter_url": chapter_url,
+                "chapter_added": chapter_added,
+            }
         )
     # for log in logs:
     try:
@@ -104,7 +113,7 @@ def get_chapters(manga_url, current_chapter, manga_title) -> list:
         chapter_urls_logger.exception(
             f"Error occurred in extract_details_from_url: {e}"
         )
-    return chapter_details
+    return chapter_meta_details
 
 
 def extract_details_from_url() -> List[Dict[str, str]]:
@@ -136,7 +145,6 @@ def extract_details_from_url() -> List[Dict[str, str]]:
                 "Manga_url": url,
             }
             manga_details.append(details)
-        # print(manga_details)
         return manga_details
     except Exception as e:
         chapter_urls_logger.exception(
@@ -169,5 +177,5 @@ def insert_data(collection_var: str):
 
 if __name__ == "__main__":
     collection_name = "get_manga_chapters"
-    # delete_collection_records(collection_name)
+    # delete_collection_records(get_collection(collection_name))
     insert_data(collection_name)
