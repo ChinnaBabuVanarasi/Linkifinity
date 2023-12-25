@@ -14,12 +14,7 @@ def format_date_records(records):
     for record in records:
         if "Latest_chapters" in record:
             for chapter in record["Latest_chapters"]:
-                # Convert the date string to a datetime object
-                date_time = datetime.strptime(
-                    chapter["chapter_added"], "%a, %d %b %Y %H:%M:%S %Z"
-                )
-                # Format the datetime object as "dd-mm-yyyy"
-                formatted_date = date_time.strftime("%d-%m-%Y")
+                formatted_date = datetime.strftime(chapter["chapter_added"], "%d %B %Y")
                 chapter["chapter_added"] = formatted_date
     return records
 
