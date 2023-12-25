@@ -1,3 +1,4 @@
+from datetime import datetime
 import re
 from colorama import Fore
 import pandas as pd
@@ -19,13 +20,34 @@ except ModuleNotFoundError:
     from database_connection import get_collection
 
 
-def insert_links_from_csv(filepath, collection):
+def get_links_from_csv(filepath):
     df = pd.read_csv(filepath)
-
-    bulk_operations = []
-    logs = []
+    links = []
     for i, row in df.iterrows():
         link = row["links"]
+        current_datetime = datetime.now()
+        date_added = datetime(
+            current_datetime.year, current_datetime.month, current_datetime.day
+        )
+        links.append({"Manga_url": link, "Date_added": date_added})
+    return links
+
+
+def get_links_from_db():
+    csv_collection = get_collection("get_csv_links")
+    records = list(csv_collection.find({}, {"_id": False}))
+    return records
+
+
+def insert_links_to_db(filepath="", collection="", choice=0):
+    if choice == 1:
+        links = get_links_from_csv(filepath)
+    else:
+        links = get_links_from_db()
+    bulk_operations = []
+    logs = []
+    for i, row in enumerate(links):
+        link = row["Manga_url"]
         soup = get_page_source(link)
         title = soup.find("div", class_="post-title").find("h1").text.strip()
         site = link.split("/")[2]
@@ -36,6 +58,7 @@ def insert_links_from_csv(filepath, collection):
             {"$and": [{"Title": title}, {"Manga_url": link}]}
         )
         if not existing_doc:
+            data["Date_added"] = row["Date_added"]
             bulk_operations.append(data)
             print(Fore.RED, f"Inserted: {i}, {link}")
             logs.append(f"Inserted Manga: {link}")
@@ -51,8 +74,9 @@ def insert_links_from_csv(filepath, collection):
 
 
 collection_name = get_collection("get_manga_links")
+# ! choice == '1' if reading links from csv files else choice == '0' if reading links from static list
 fileinput = (
     "/media/charan/code/Myprojects/PythonProjects/Linkifinity/csvfiles/links.csv"
 )
-insert_links_from_csv(fileinput, collection=collection_name)
+insert_links_to_db(filepath=fileinput, collection=collection_name)
 # delete_collection_records(collection_name)
