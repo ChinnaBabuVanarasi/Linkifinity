@@ -1,6 +1,0 @@
-2023-12-16 17:23:42,334 - ERROR - Error occurred in extract_details_from_url: list index out of range
-Traceback (most recent call last):
-  File "/media/charan/code/Myprojects/PythonProjects/Linkifinity/utils/manga_chapters.py", line 102, in get_chapters
-    chapter_details_logger.info(logs[-1].strip())
-                                ~~~~^^^^
-IndexError: list index out of range
