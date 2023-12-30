@@ -22,7 +22,7 @@ def delete_collection_records(collection_name):
 
 
 def setup_logging(filename):
-    log_directory = "/media/charan/code/Myprojects/PythonProjects/Linkifinity/Logs"
+    log_directory = "/media/charancherry/Code/Myprojects/PythonProjects/FullStack_Projects/Linkifinity/Logs"
     log_file_name = os.path.join(
         f"{log_directory}/{filename}",
         f"log_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.log",
