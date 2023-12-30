@@ -4,3 +4,4 @@ selenium
 requests
 flask
 beautifulsoup4
+colorama

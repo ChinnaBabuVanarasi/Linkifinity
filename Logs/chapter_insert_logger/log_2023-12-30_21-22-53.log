@@ -1,0 +1,75 @@
+2023-12-30 21:30:59,967 - ERROR - IndexError occurred for manga: I Obtained a Mythic Item. Error: list index out of range
+2023-12-30 21:31:00,901 - ERROR - IndexError occurred for manga: Chronicles of the Demon Faction. Error: list index out of range
+2023-12-30 21:31:02,774 - INFO - Updated latest chapter in MongoDB for 'Invincible at the Start': 112 -> 113
+2023-12-30 21:31:02,774 - INFO - Updated latest chapter in MongoDB for 'Reaper of the Drifting Moon': 67 -> 68
+2023-12-30 21:31:02,774 - INFO - No update needed for 'Weapon Maker' in MongoDB. Local: 23,MongoDB: 23
+2023-12-30 21:31:02,774 - INFO - Updated latest chapter in MongoDB for 'Nano Machine': 185 -> 186
+2023-12-30 21:31:02,774 - INFO - Updated latest chapter in MongoDB for 'Keep A Low Profile, Sect Leader': 301 -> 304
+2023-12-30 21:31:02,774 - INFO - Updated latest chapter in MongoDB for 'Return of the Flowery Mountain Sect': 103 -> 104
+2023-12-30 21:31:02,774 - INFO - Updated latest chapter in MongoDB for 'Omniscient Reader’s Viewpoint': 189 -> 190
+2023-12-30 21:31:02,775 - INFO - Updated latest chapter in MongoDB for 'Foreigner on the Periphery (Remake)': 26 -> 27
+2023-12-30 21:31:02,775 - INFO - Updated latest chapter in MongoDB for 'The Max Level Hero has Returned!': 147 -> 148
+2023-12-30 21:31:02,775 - INFO - No update needed for 'To Hell With Being A Saint I’m A Doctor' in MongoDB. Local: 79,MongoDB: 79
+2023-12-30 21:31:02,775 - INFO - No update needed for 'Leveling With The Gods' in MongoDB. Local: 100,MongoDB: 100
+2023-12-30 21:31:02,775 - INFO - Updated latest chapter in MongoDB for 'The S-Classes That I Raised': 115 -> 117
+2023-12-30 21:31:02,775 - INFO - Updated latest chapter in MongoDB for 'Silver Demon King': 114 -> 115
+2023-12-30 21:31:02,775 - INFO - Updated latest chapter in MongoDB for 'I Became A Part Time Employee For Gods': 45 -> 46
+2023-12-30 21:31:02,775 - INFO - Updated latest chapter in MongoDB for 'The Count’s Youngest Son is A Player': 29 -> 30
+2023-12-30 21:31:02,775 - INFO - Updated latest chapter in MongoDB for 'The Novel’s Extra (Remake)': 88 -> 89
+2023-12-30 21:31:02,775 - INFO - Updated latest chapter in MongoDB for 'Martial God Regressed to Level 2': 40 -> 41
+2023-12-30 21:31:02,775 - INFO - No update needed for 'Astral Pet Store' in MongoDB. Local: 131,MongoDB: 131
+2023-12-30 21:31:02,775 - INFO - Updated latest chapter in MongoDB for 'Disastrous Necromancer': 47 -> 48
+2023-12-30 21:31:02,775 - INFO - No update needed for 'Gods’ Gambit' in MongoDB. Local: 22,MongoDB: 22
+2023-12-30 21:31:02,775 - INFO - Updated latest chapter in MongoDB for 'I Became a Renowned Family’s Sword Prodigy': 92 -> 93
+2023-12-30 21:31:02,776 - INFO - No update needed for 'Kill The Hero' in MongoDB. Local: 150,MongoDB: 150
+2023-12-30 21:31:02,776 - INFO - Updated latest chapter in MongoDB for 'Overgeared': 209 -> 212
+2023-12-30 21:31:02,776 - INFO - No update needed for 'Reincarnation of the Suicidal Battle God' in MongoDB. Local: 101.5,MongoDB: 101.5
+2023-12-30 21:31:02,776 - INFO - No update needed for 'Return of the Legendary Spear Knight' in MongoDB. Local: 119,MongoDB: 119
+2023-12-30 21:31:02,776 - INFO - No update needed for 'Return to Player' in MongoDB. Local: 150,MongoDB: 150
+2023-12-30 21:31:02,776 - INFO - No update needed for 'Seoul Station Druid' in MongoDB. Local: 116,MongoDB: 116
+2023-12-30 21:31:02,776 - INFO - No update needed for 'Seoul Station’s Necromancer' in MongoDB. Local: 113,MongoDB: 113
+2023-12-30 21:31:02,776 - INFO - No update needed for 'Sleeping Ranker' in MongoDB. Local: 100,MongoDB: 100
+2023-12-30 21:31:02,776 - INFO - No update needed for 'Solo Max-Level Newbie' in MongoDB. Local: 132,MongoDB: 132
+2023-12-30 21:31:02,776 - INFO - No update needed for 'Spirit Farmer' in MongoDB. Local: 154,MongoDB: 154
+2023-12-30 21:31:02,776 - INFO - No update needed for 'Swordmaster’s Youngest Son' in MongoDB. Local: 100,MongoDB: 100
+2023-12-30 21:31:02,776 - INFO - Updated latest chapter in MongoDB for 'The Game That I Came From': 238 -> 240
+2023-12-30 21:31:02,776 - INFO - No update needed for 'Necromancer Survival' in MongoDB. Local: 79,MongoDB: 79
+2023-12-30 21:31:02,776 - INFO - Updated latest chapter in MongoDB for 'The Heavenly Demon Can’t Live a Normal Life': 100 -> 101
+2023-12-30 21:31:02,776 - INFO - Updated latest chapter in MongoDB for 'The Player Hides His Past': 34 -> 35
+2023-12-30 21:31:02,777 - INFO - Updated latest chapter in MongoDB for 'The Reincarnated Assassin is a Genius Swordsman': 31 -> 32
+2023-12-30 21:31:02,777 - INFO - Updated latest chapter in MongoDB for 'The World After The Fall': 106 -> 107
+2023-12-30 21:31:02,777 - INFO - Updated latest chapter in MongoDB for 'Villain to Kill': 128 -> 129
+2023-12-30 21:31:02,777 - INFO - No update needed for 'Academy’s Genius Swordmaster' in MongoDB. Local: 28,MongoDB: 28
+2023-12-30 21:31:02,777 - INFO - Updated latest chapter in MongoDB for 'Cultivating the supreme dantian': 280 -> 282
+2023-12-30 21:31:02,777 - INFO - Updated latest chapter in MongoDB for 'Evolution From a Tree': 151 -> 152
+2023-12-30 21:31:02,777 - INFO - Updated latest chapter in MongoDB for 'F-Class Destiny Hunter': 53 -> 54
+2023-12-30 21:31:02,777 - INFO - No update needed for 'Global Mayhem: awakening SSS-Class talent at the start!' in MongoDB. Local: 80,MongoDB: 80
+2023-12-30 21:31:02,777 - INFO - No update needed for 'Golden Mage' in MongoDB. Local: 40,MongoDB: 40
+2023-12-30 21:31:02,777 - INFO - Updated latest chapter in MongoDB for 'Grandson of the Holy Emperor is a Necromancer': 23 -> 24
+2023-12-30 21:31:02,777 - INFO - Updated latest chapter in MongoDB for 'I Level Up By Absorbing Everything': 28 -> 29
+2023-12-30 21:31:02,777 - INFO - No update needed for 'I Picked A Hammer To Save The World' in MongoDB. Local: 59,MongoDB: 59
+2023-12-30 21:31:02,777 - INFO - No update needed for 'I’m Really Scared!' in MongoDB. Local: 39,MongoDB: 39
+2023-12-30 21:31:02,777 - INFO - No update needed for 'Insanely-Talented Player' in MongoDB. Local: 22,MongoDB: 22
+2023-12-30 21:31:02,777 - INFO - Updated latest chapter in MongoDB for 'Legendary Blacksmith’s Vengeance': 35 -> 36
+2023-12-30 21:31:02,777 - INFO - Updated latest chapter in MongoDB for 'Logging 10,000 Years into the Future': 81 -> 82
+2023-12-30 21:31:02,777 - INFO - Updated latest chapter in MongoDB for 'My Dragon System': 56 -> 57
+2023-12-30 21:31:02,778 - INFO - Updated latest chapter in MongoDB for 'My Lucky Encounter From The Game Turned Into Reality': 33 -> 34
+2023-12-30 21:31:02,778 - INFO - No update needed for 'Reborn Ranker – Gravity User (Manga)' in MongoDB. Local: 59,MongoDB: 59
+2023-12-30 21:31:02,778 - INFO - Updated latest chapter in MongoDB for 'Records of the Demonic Path’s Return': 27 -> 28
+2023-12-30 21:31:02,778 - INFO - No update needed for 'Returned as a Martial Genius' in MongoDB. Local: 28,MongoDB: 28
+2023-12-30 21:31:02,778 - INFO - No update needed for 'Steel-Eating Player' in MongoDB. Local: 21,MongoDB: 21
+2023-12-30 21:31:02,778 - INFO - Updated latest chapter in MongoDB for 'Sword Demon Island': 62 -> 63
+2023-12-30 21:31:02,778 - INFO - No update needed for 'Tempest Tyrant' in MongoDB. Local: 32,MongoDB: 32
+2023-12-30 21:31:02,778 - INFO - No update needed for 'The Constellations Are My Disciples' in MongoDB. Local: 49,MongoDB: 49
+2023-12-30 21:31:02,778 - INFO - No update needed for 'The Return Of Apocalypses Tyrant' in MongoDB. Local: 27,MongoDB: 27
+2023-12-30 21:31:02,778 - INFO - No update needed for 'The Son Of The First Emperor Kills Enemies And Becomes A God' in MongoDB. Local: 85,MongoDB: 85
+2023-12-30 21:31:02,778 - INFO - Updated latest chapter in MongoDB for 'Apotheosis': 1148 -> 1150
+2023-12-30 21:31:02,778 - INFO - Updated latest chapter in MongoDB for 'Magic Emperor': 486 -> 489
+2023-12-30 21:31:02,778 - INFO - Updated latest chapter in MongoDB for 'Martial Peak': 3647 -> 3650
+2023-12-30 21:31:02,778 - INFO - Updated latest chapter in MongoDB for 'Tales Of Demons And Gods': 458.1 -> 459.1
+2023-12-30 21:31:02,778 - INFO - Updated latest chapter in MongoDB for 'Yuan Zun': 560 -> 561
+2023-12-30 21:31:02,778 - INFO - No update needed for 'The Player that can’t Level Up' in MongoDB. Local: 130,MongoDB: 130
+2023-12-30 21:31:02,778 - INFO - Updated latest chapter in MongoDB for 'The Max-Level Player’s 100th Regression': 32 -> 33
+2023-12-30 21:31:02,778 - INFO - No update needed for 'The Dark Mage’s Return to Enlistment' in MongoDB. Local: 46,MongoDB: 46
+2023-12-30 21:31:02,778 - INFO - Updated latest chapter in MongoDB for 'The Iron-Blooded Necromancer Has Returned': 30 -> 31
+2023-12-30 21:31:02,778 - INFO - Updated latest chapter in MongoDB for 'I Became The Youngest Prince in The Novel': 21 -> 22
