@@ -49,7 +49,6 @@ def get_current_chapter(url):
             raise ValueError("Invalid URL")
         chapter_collection = get_collection("get_manga_chapters")
         doc = chapter_collection.find_one({"Manga_url": url}, {"Latest_chapters": True})
-        # print(doc)
         if doc:
             return doc["Latest_chapters"][0]["chapter_num"]
         return 0
