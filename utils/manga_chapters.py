@@ -46,8 +46,6 @@ def get_latest_chapter(chapter):
 
 def get_current_chapter(url):
     try:
-        if not isinstance(url, str) or not url.startswith("http"):
-            raise ValueError("Invalid URL")
         chapter_collection = get_collection("get_manga_chapters")
         doc = chapter_collection.find_one({"Manga_url": url}, {"Latest_chapters": True})
         if doc:
@@ -106,12 +104,15 @@ def get_chapters(manga_url, current_chapter, manga_title) -> list:
             }
         )
     # for log in logs:
-    try:
-        chapter_details_logger.info(logs[-1].strip())
-    except IndexError as e:
-        chapter_urls_logger.exception(
-            f"Error occurred in extract_details_from_url: {e}"
-        )
+    if logs:
+        try:
+            chapter_details_logger.info(logs[-1].strip())
+        except IndexError as e:
+            chapter_urls_logger.exception(
+                f"Error occurred in extract_details_from_url: {e}"
+            )
+    else:
+        chapter_details_logger.info("No New Chapters.")
     return chapter_meta_details
 
 
@@ -144,6 +145,7 @@ def extract_details_from_url() -> List[Dict[str, str]]:
                 "Manga_url": url,
             }
             manga_details.append(details)
+            # break
         return manga_details
     except Exception as e:
         chapter_urls_logger.exception(

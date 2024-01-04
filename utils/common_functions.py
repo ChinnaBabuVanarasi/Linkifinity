@@ -69,6 +69,17 @@ def get_page_source(manga_url) -> BeautifulSoup:
 
 
 def mongodb_insertion(manga_details, collection_var, insert_logger):
+    """
+    Inserts manga details into a MongoDB collection.
+
+    Args:
+        manga_details (list): A list of dictionaries containing manga details.
+        collection_var (str): The name of the MongoDB collection.
+        insert_logger (Logger): A logger object for logging errors.
+
+    Returns:
+        None
+    """
     collection = get_collection(collection_var)
     logs = []
 
@@ -77,7 +88,6 @@ def mongodb_insertion(manga_details, collection_var, insert_logger):
             title = manga.get("Title")
             local_latest_chapters = manga.get("Latest_chapters", [])
 
-            # Sort the chapters in descending order by chapter_num
             sorted_chapters = sorted(
                 local_latest_chapters,
                 key=lambda x: x.get("chapter_num", 0),
@@ -89,12 +99,23 @@ def mongodb_insertion(manga_details, collection_var, insert_logger):
             if mongodb_document:
                 existing_chapters = mongodb_document.get("Latest_chapters", [])
 
-                # Find new chapters that are not already in the database
+                # comparing with chapter number
+                # Identify unique chapter identifiers
+                chapter_nums_existing = [chap.get("chapter_num") for chap in existing_chapters]
+                
+                # Compare using chapter numbers to identify new chapters
                 new_chapters = [
                     chapter
                     for chapter in sorted_chapters
-                    if chapter not in existing_chapters
+                    if chapter.get("chapter_num") not in chapter_nums_existing
                 ]
+
+                # new_chapters = [
+                #     chapter
+                #     for chapter in sorted_chapters
+                #     if chapter not in existing_chapters
+                # ]
+
                 if new_chapters:
                     logs.append(
                         f"New chapters found for '{title}' in the list. Inserting to MongoDB."
@@ -118,6 +139,7 @@ def mongodb_insertion(manga_details, collection_var, insert_logger):
                         "Image": manga["Image"],
                         "Binary_Image": manga["Binary_Image"],
                         "Latest_chapters": sorted_chapters,
+                        "Manga_url": manga["Manga_url"],
                     }
                 )
                 logs.append(
