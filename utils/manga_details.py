@@ -1,5 +1,8 @@
 import base64
+import os
 import time
+from pathlib import Path
+
 from colorama import Fore
 import requests
 
@@ -18,7 +21,7 @@ except ModuleNotFoundError:
     )
     from utils.database_connection import get_collection
 
-IMAGE_CONSTANT = "/9j/4QVfRXhpZgAASUkqAAgAAAAMAAABAwABAAAALAEAAAEBAwABAAAAwgEAAAIBAwADAAAAngAAAAYBAwABAAAAAgAAABIBAwAB"
+IMAGE_CONSTANT = '/9j/4QVfRXhpZgAASUkqAAgAAAAMAAABAwABAAAALAEAAAEBAwABAAAAwgEAAAIBAwADAAAAngAAAAYBAwABAAAAAgAAABIBAwAB'
 
 
 def update_no_image_records(en_image, title):
@@ -54,7 +57,7 @@ def get_image(soup, title):
             image_data = response.content
             en_image = base64.b64encode(image_data).decode("utf-8")
         else:
-            placeholder_image_url = "/media/charan/code/Myprojects/PythonProjects/Linkifinity/placeholder.jpg"
+            placeholder_image_url = os.path.join(Path(os.getcwd()).resolve().parent, 'placeholder.jpg')
             with open(placeholder_image_url, "rb") as f:
                 image_data = f.read()
             en_image = base64.b64encode(image_data).decode("utf-8")
@@ -66,21 +69,23 @@ def get_image(soup, title):
         print("An error occurred:", str(e))
 
 
-def extract_meta_data(url,date_added):
+def extract_meta_data(url, date_added):
     soup = get_page_source(url)
     title = soup.find("div", class_="post-title").find("h1").text.strip()
-    Image_data = get_image(soup, title)
+    image_data = get_image(soup, title)
     details = {
         "Title": title,
-        "Image": Image_data["image"],
-        "Binary_Image": Image_data["binary_image"],
+        "Image": image_data["image"],
+        "Binary_Image": image_data["binary_image"],
         "Manga_url": url,
-        "Date_added":date_added
+        "Date_added": date_added
     }
     return details
 
 
-def get_record(collection_name, query, projection={"_id": False}):
+def get_record(collection_name, query, projection=None):
+    if projection is None:
+        projection = {"_id": False}
     collection = get_collection(collection_name)
     return collection.find_one(query, projection)
 
@@ -100,7 +105,7 @@ def extract_details_from_urls():
             else:
                 print(Fore.GREEN, f"{i}: {url} is already present in the database.")
         except Exception as e:
-            print(Fore.MAGENTA,f"Error occurred while extracting details for {url}: {str(e)}")
+            print(Fore.MAGENTA, f"Error occurred while extracting details for {record.get('Manga_url')}: {str(e)}")
     return manga_details
 
 
@@ -123,7 +128,7 @@ def insert_data(details_collection):
     logs = []
     for manga in manga_details:
         if not details_collection.find_one(
-            {"Title": manga["Title"], "Manga_url": manga["Manga_url"]}
+                {"Title": manga["Title"], "Manga_url": manga["Manga_url"]}
         ):
             logs.append(f"New Manga document Inserted in MongoDB -> '{manga['Title']}'")
         details_collection.update_one(
@@ -140,8 +145,8 @@ def insert_data(details_collection):
 
 
 if __name__ == "__main__":
-    details_collection = get_collection("get_manga_details")
-    insert_data(details_collection)
+    manga_details_collection = get_collection("get_manga_details")
+    insert_data(manga_details_collection)
 
     # collection_name = get_collection("get_manga_details")
     # delete_collection_records(collection_name)

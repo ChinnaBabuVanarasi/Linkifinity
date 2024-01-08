@@ -1,5 +1,6 @@
 import json
 import os
+from pathlib import Path
 
 from pymongo import MongoClient
 
@@ -12,15 +13,16 @@ COLLECTIONS = {
     "get_manga_images": "MANGAIMAGES",
     "get_manga_chapters": "CHAPTERSDB",
     "get_manga_details": "MANGADETAILS",
-    "get_csv_links":"CSVLINKS"
+    "get_csv_links": "CSVLINKS"
 }
 
 
 def read_credentials():
     if not hasattr(read_credentials, "cached_credentials"):
-        credentials_path = os.path.join(
-            os.path.dirname(__file__), "..", "env", "creds.json"
-        )
+        credentials_path = os.path.join(Path(os.getcwd()).resolve().parent, 'env/creds.json')
+        # credentials_path = os.path.join(
+        #     os.path.dirname(__file__), "..", "env", "creds.json"
+        # )
         with open(credentials_path, "r") as f:
             read_credentials.cached_credentials = json.load(f)
     return read_credentials.cached_credentials

@@ -1,7 +1,7 @@
 import logging
 import os
 from datetime import datetime
-from colorama import Fore
+from pathlib import Path
 
 from bs4 import BeautifulSoup
 from selenium import webdriver
@@ -28,7 +28,11 @@ def setup_logging(filename):
     else:
         filename = filename
         name = filename.split("_logger")[0]
-    log_directory = "/media/charancherry/Code/Myprojects/PythonProjects/FullStack_Projects/Linkifinity/Logs"
+    try:
+        # log_directory = os.path.join(os.path.basename(os.path.dirname(os.getcwd())), 'Logs')
+        log_directory = os.path.join(Path(os.getcwd()).resolve().parent, 'Logs')
+    except FileNotFoundError:
+        log_directory = "/home/charan/code/Linkifinity/Logs"
     log_file_name = os.path.join(
         f"{log_directory}/{filename}",
         f"log_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.log",
@@ -102,7 +106,7 @@ def mongodb_insertion(manga_details, collection_var, insert_logger):
                 # comparing with chapter number
                 # Identify unique chapter identifiers
                 chapter_nums_existing = [chap.get("chapter_num") for chap in existing_chapters]
-                
+
                 # Compare using chapter numbers to identify new chapters
                 new_chapters = [
                     chapter
@@ -146,7 +150,7 @@ def mongodb_insertion(manga_details, collection_var, insert_logger):
                     f"No matching document found in MongoDB for '{title}', New document inserted."
                 )
         except Exception as e:
-            insert_logger.error(f"Error occurred for manga: {title}. Error: {e}")
+            insert_logger.error(f"Error occurred for manga: {manga['Title']}. Error: {e}")
 
     for log in logs:
         insert_logger.info(log)

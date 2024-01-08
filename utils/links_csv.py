@@ -1,4 +1,7 @@
+import os
 from datetime import datetime
+from pathlib import Path
+
 from colorama import Fore
 import pandas as pd
 
@@ -18,17 +21,17 @@ except ModuleNotFoundError:
 
 def get_links_from_csv(filepath):
     df = pd.read_csv(filepath)
-    links = []
+    urls = []
     for i, row in df.iterrows():
         link = row["links"]
-        links.append(link)
-    return links
+        urls.append(link)
+    return urls
 
 
-def insert_links_to_csv(links, collection):
+def insert_links_to_csv(links_list, collection):
     bulk_operations = []
     logs = []
-    for i, link in enumerate(links):
+    for i, link in enumerate(links_list):
         data = {"Manga_url": link}
         # Check existence of the title in the collection
         existing_doc = collection.find_one(data)
@@ -58,9 +61,8 @@ collection_name = get_collection("get_csv_links")
 choice = 1
 # ! choice == '1' if reading links from csv files else choice == '0' if reading links from static list
 if choice == 1:
-    fileinput = (
-        "/media/charan/code/Myprojects/PythonProjects/Linkifinity/csvfiles/links.csv"
-    )
+    fileinput = os.path.join(Path(os.getcwd()).resolve().parent, 'csvfiles/links.csv')
+
     links = get_links_from_csv(fileinput)
 else:
     links = ["https://kunmanga.com/manga/invincible-at-the-start/"]
