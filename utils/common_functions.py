@@ -1,38 +1,21 @@
 import logging
 import os
 from datetime import datetime
-from pathlib import Path
 
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
-try:
-    from utils.database_connection import get_collection
-except ModuleNotFoundError:
-    from database_connection import get_collection
+from utils.database_connection import get_collection
 
 
-# Delete all records from a collection
-
-
-def delete_collection_records(collection_name):
-    # collection_name = get_collection(name)
+def delete_collection_records(name):
+    collection_name = get_collection(name)
     collection_name.delete_many({})
 
 
 def setup_logging(filename):
-    if "chapter" in filename:
-        filename = f"Chapters/{filename}"
-        name = filename.split("/")[1].split("_logger")[0]
-    else:
-        filename = filename
-        name = filename.split("_logger")[0]
-    try:
-        # log_directory = os.path.join(os.path.basename(os.path.dirname(os.getcwd())), 'Logs')
-        log_directory = os.path.join(Path(os.getcwd()).resolve().parent, 'Logs')
-    except FileNotFoundError:
-        log_directory = "/home/charan/code/Linkifinity/Logs"
+    log_directory = "/media/charan/code/Myprojects/PythonProjects/Linkifinity/Logs"
     log_file_name = os.path.join(
         f"{log_directory}/{filename}",
         f"log_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.log",
@@ -40,7 +23,7 @@ def setup_logging(filename):
     os.makedirs(os.path.dirname(log_file_name), exist_ok=True)
 
     # Create a logger instance
-    logger = logging.getLogger(name)
+    logger = logging.getLogger(__name__)
     logger.setLevel(logging.INFO)
 
     # Create a file handler
@@ -72,88 +55,39 @@ def get_page_source(manga_url) -> BeautifulSoup:
     return soup
 
 
-def mongodb_insertion(manga_details, collection_var, insert_logger):
-    """
-    Inserts manga details into a MongoDB collection.
-
-    Args:
-        manga_details (list): A list of dictionaries containing manga details.
-        collection_var (str): The name of the MongoDB collection.
-        insert_logger (Logger): A logger object for logging errors.
-
-    Returns:
-        None
-    """
+def mongodb_insertion(manga_details, collection_var, logfile):
+    logger = setup_logging(logfile)
     collection = get_collection(collection_var)
     logs = []
-
     for manga in manga_details:
         try:
-            title = manga.get("Title")
-            local_latest_chapters = manga.get("Latest_chapters", [])
-
-            sorted_chapters = sorted(
-                local_latest_chapters,
-                key=lambda x: x.get("chapter_num", 0),
-                reverse=True,
-            )
-
-            mongodb_document = collection.find_one({"Title": title})
-
+            logs.append(f"Inserting manga: {manga['Title']}")
+            local_latest_chapter = manga["Latest_chapters"][0]["chapter_num"]
+            mongodb_document = collection.find_one({"Title": manga["Title"]})
             if mongodb_document:
-                existing_chapters = mongodb_document.get("Latest_chapters", [])
-
-                # comparing with chapter number
-                # Identify unique chapter identifiers
-                chapter_nums_existing = [chap.get("chapter_num") for chap in existing_chapters]
-
-                # Compare using chapter numbers to identify new chapters
-                new_chapters = [
-                    chapter
-                    for chapter in sorted_chapters
-                    if chapter.get("chapter_num") not in chapter_nums_existing
-                ]
-
-                # new_chapters = [
-                #     chapter
-                #     for chapter in sorted_chapters
-                #     if chapter not in existing_chapters
-                # ]
-
-                if new_chapters:
+                mongodb_latest_chapter = mongodb_document["Latest_chapters"][0]["chapter_num"]
+                if float(local_latest_chapter) > float(mongodb_latest_chapter):
                     logs.append(
-                        f"New chapters found for '{title}' in the list. Inserting to MongoDB."
-                    )
-                    updated_chapters = existing_chapters + new_chapters
-                    sorted_updated_chapters = sorted(
-                        updated_chapters,
-                        key=lambda x: x.get("chapter_num", 0),
-                        reverse=True,
+                        f"""Updated latest chapter in MongoDB for '{manga['Title']}': 
+                                {mongodb_latest_chapter} -> {local_latest_chapter}"""
                     )
                     collection.update_one(
                         {"_id": mongodb_document["_id"]},
-                        {"$set": {"Latest_chapters": sorted_updated_chapters}},
+                        {"$set": {"Latest_chapters": manga["Latest_chapters"]}},
                     )
                 else:
-                    logs.append(f"No new chapters found for '{title}' in the list.")
+                    logs.append(
+                        f"""No update needed for '{manga['Title']}' in MongoDB. Local: {local_latest_chapter},
+                         MongoDB: {mongodb_latest_chapter}"""
+                    )
             else:
-                collection.insert_one(
-                    {
-                        "Title": title,
-                        "Image": manga["Image"],
-                        "Binary_Image": manga["Binary_Image"],
-                        "Latest_chapters": sorted_chapters,
-                        "Manga_url": manga["Manga_url"],
-                    }
-                )
-                logs.append(
-                    f"No matching document found in MongoDB for '{title}', New document inserted."
-                )
-        except Exception as e:
-            insert_logger.error(f"Error occurred for manga: {manga['Title']}. Error: {e}")
-
+                collection.insert_one(manga)
+                logs.append(f"No matching document found in MongoDB for '{manga['Title']}'")
+                logs.append(f"New document inserted for '{manga['Title']}'")
+        except IndexError as e:
+            logger.error(f"IndexError occurred for manga: {manga['Title']}. Error: {e}")
     for log in logs:
-        insert_logger.info(log)
+        logger.info(log)
 
 
 def validate_data(manga_details):

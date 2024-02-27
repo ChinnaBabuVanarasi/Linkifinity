@@ -1,7 +1,5 @@
+Flask
+gunicorn
 pymongo
-pandas
-selenium
-requests
-flask
-beautifulsoup4
-colorama
+Werkzeug
+flask_cors
