@@ -12,6 +12,7 @@ COLLECTIONS = {
     "get_manga_images": "MANGAIMAGES",
     "get_manga_chapters": "CHAPTERSDB",
     "get_manga_details": "MANGADETAILS",
+    "get_csv_links": "CSVLINKS"
 }
 
 
