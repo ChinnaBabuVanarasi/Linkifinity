@@ -1,7 +1,6 @@
 from datetime import datetime
 from typing import Dict, List
 import re
-
 from colorama import Fore
 
 try:
