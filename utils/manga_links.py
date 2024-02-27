@@ -1,8 +1,9 @@
+import os
 from datetime import datetime
-import re
-from colorama import Fore
-import pandas as pd
+from pathlib import Path
 
+import pandas as pd
+from colorama import Fore
 
 try:
     from utils.common_functions import (
@@ -39,7 +40,7 @@ def get_links_from_db():
     return records
 
 
-def insert_links_to_db(filepath="", collection="", choice=0):
+def insert_links_to_db(filepath="", collection=None, choice=0):
     if choice == 1:
         links = get_links_from_csv(filepath)
     else:
@@ -61,9 +62,9 @@ def insert_links_to_db(filepath="", collection="", choice=0):
             data["Date_added"] = row["Date_added"]
             bulk_operations.append(data)
             print(Fore.RED, f"Inserted: {i}, {link}")
-            logs.append(f"Inserted Manga: {link}")
+            logs.append(f"{i}. {link} : New Manga Inserted")
         else:
-            print(Fore.GREEN, f"{link} : {title} Already exists.")
+            print(Fore.GREEN, f"{i}. {link} : Already exists.")
 
     if bulk_operations:
         collection.insert_many(bulk_operations)
@@ -75,8 +76,8 @@ def insert_links_to_db(filepath="", collection="", choice=0):
 
 collection_name = get_collection("get_manga_links")
 # ! choice == '1' if reading links from csv files else choice == '0' if reading links from static list
-fileinput = (
-    "/media/charan/code/Myprojects/PythonProjects/Linkifinity/csvfiles/links.csv"
-)
+fileinput = os.path.join(Path(os.getcwd()).resolve().parent, 'csvfiles/links.csv')
+
 insert_links_to_db(filepath=fileinput, collection=collection_name)
+
 # delete_collection_records(collection_name)
