@@ -61,7 +61,7 @@ collection_name = get_collection("get_csv_links")
 choice = 1
 # ! choice == '1' if reading links from csv files else choice == '0' if reading links from static list
 if choice == 1:
-    fileinput = os.path.join(Path(os.getcwd()).resolve().parent, 'csvfiles/links.csv')
+    fileinput = os.path.join(Path(os.getcwd()).resolve(), 'csvfiles/links.csv')
 
     links = get_links_from_csv(fileinput)
 else:
