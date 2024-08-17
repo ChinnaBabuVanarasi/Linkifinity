@@ -20,7 +20,9 @@ def format_date_records(records):
     return records
 
 
-def find_record(collection, query, projection={"_id": False}):
+def find_record(collection, query, projection=None):
+    if projection is None:
+        projection = {"_id": False}
     record = collection.find_one(query, projection)
     if record:
         return record
