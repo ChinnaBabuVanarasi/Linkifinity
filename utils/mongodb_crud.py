@@ -19,6 +19,7 @@ def find_and_delete_by_url(collection_name):
         else:
             print("Record not found")
 
+
 def delete_one_by_url(collection_name):
     """Finds a record by URL, presents it, and then deletes it."""
     collection = get_collection(collection_name)
@@ -37,9 +38,19 @@ def get_records_in_col(collection_name):
     return records
 
 
+def delete_all(collection_name):
+    collection = get_collection(collection_name)
+    result = collection.delete_many({})
+    if result:
+        print(f"{result.deleted_count} Records deleted successfully")
+    else:
+        print("Error deleting record")
+
+
 chapters_col = 'get_manga_chapters'
 metadata_col = 'get_manga_details'
 manga_links_col = "get_manga_links"
 links_col = 'get_csv_links'
 # find_and_delete_by_url(collection_name=chapters_col)
-delete_one_by_url(collection_name=chapters_col)
+# delete_one_by_url(collection_name=chapters_col)
+delete_all(chapters_col)
