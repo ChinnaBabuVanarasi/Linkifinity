@@ -1,6 +1,7 @@
+import re
 from datetime import datetime
 from typing import Dict, List
-import re
+
 from colorama import Fore
 
 try:
@@ -13,6 +14,7 @@ try:
     from database_connection import get_collection, close_database_connection
 except ModuleNotFoundError:
     from utils.common_functions import (
+
         get_page_source,
         setup_logging,
         delete_collection_records,
@@ -23,6 +25,7 @@ except ModuleNotFoundError:
 chapter_details_logger = setup_logging(filename="chapter_details_logger")
 chapter_urls_logger = setup_logging(filename="chapter_urls_logger")
 chapter_insert_logger = setup_logging(filename="chapter_insert_logger")
+
 
 # get latest chapter
 

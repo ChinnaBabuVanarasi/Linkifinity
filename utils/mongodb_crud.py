@@ -20,16 +20,17 @@ def find_and_delete_by_url(collection_name):
             print("Record not found")
 
 
-def delete_one_by_url(collection_name):
+def delete_one_by_url(collection_name, urls):
     """Finds a record by URL, presents it, and then deletes it."""
     collection = get_collection(collection_name)
-    url = "https://kunmanga.com/manga/children-of-the-rune/"
-    # Delete the record
-    result = collection.delete_one({"Manga_url": url})
-    if result.deleted_count == 1:
-        print("Record deleted successfully")
-    else:
-        print("Error deleting record")
+    for url in urls:
+        # url = "https://kunmanga.com/manga/children-of-the-rune/"
+        # Delete the record
+        result = collection.delete_one({"Manga_url": url})
+        if result.deleted_count == 1:
+            print("Record deleted successfully")
+        else:
+            print("Error deleting record")
 
 
 def get_records_in_col(collection_name):
@@ -51,6 +52,9 @@ chapters_col = 'get_manga_chapters'
 metadata_col = 'get_manga_details'
 manga_links_col = "get_manga_links"
 links_col = 'get_csv_links'
+urls = ['https://kunmanga.com/manga/pupillary-master/', 'https://kunmanga.com/manga/the-ghostly-doctor/',
+        'https://harimanga.com/manga/voidman/', 'https://harimanga.com/manga/i-became-the-head-of-the-family/',
+        'https://harimanga.com/manga/shadows-resurgence/']
 # find_and_delete_by_url(collection_name=chapters_col)
-# delete_one_by_url(collection_name=chapters_col)
-delete_all(chapters_col)
+delete_one_by_url(collection_name=manga_links_col, urls=urls)
+# delete_all(chapters_col)

@@ -58,13 +58,13 @@ def insert_links_to_csv(links_list, collection):
 
 
 collection_name = get_collection("get_csv_links")
-choice = 1
+choice = 0
 # ! choice == '1' if reading links from csv files else choice == '0' if reading links from static list
 if choice == 1:
-    fileinput = os.path.join(Path(os.getcwd()).resolve(), 'csvfiles/links.csv')
-
+    fileinput = os.path.join(Path(os.getcwd()).resolve().parent, 'csvfiles\links.csv')
     links = get_links_from_csv(fileinput)
 else:
-    links = ["https://kunmanga.com/manga/invincible-at-the-start/"]
+    links = ["https://harimanga.com/manga/virus-king/", "https://harimanga.com/manga/the-magic-genius-of-the-marquis/",
+             "https://harimanga.com/manga/the-king-of-dead-souls/", "https://harimanga.com/manga/in-the-night-consumed-by-blades-i-walk-sword-fanatic-wanders-through-the-night/"]
 insert_links_to_csv(links, collection=collection_name)
 # delete_collection_records(collection_name)

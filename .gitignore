@@ -1,4 +1,4 @@
-linkvenv/
+venv/
 .idea/
 __pycache__
 .vscode/

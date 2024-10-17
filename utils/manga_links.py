@@ -1,4 +1,5 @@
 import os
+import time
 from datetime import datetime
 from pathlib import Path
 
@@ -47,24 +48,28 @@ def insert_links_to_db(filepath="", collection=None, choice=0):
         links = get_links_from_db()
     bulk_operations = []
     logs = []
-    for i, row in enumerate(links):
-        link = row["Manga_url"]
-        soup = get_page_source(link)
-        title = soup.find("div", class_="post-title").find("h1").text.strip()
-        site = link.split("/")[2]
 
-        data = {"Title": title, "Site": site, "Manga_url": link}
-        # Check existence of the title in the collection
-        existing_doc = collection.find_one(
-            {"$and": [{"Title": title}, {"Manga_url": link}]}
-        )
-        if not existing_doc:
-            data["Date_added"] = row["Date_added"]
-            bulk_operations.append(data)
-            print(Fore.RED, f"Inserted: {i}, {link}")
-            logs.append(f"{i}. {link} : New Manga Inserted")
-        else:
-            print(Fore.GREEN, f"{i}. {link} : Already exists.")
+    for i, row in enumerate(links):
+        try:
+            link = row["Manga_url"]
+            soup = get_page_source(link)
+            title = soup.find("div", class_="post-title").find("h1").text.strip()
+            site = link.split("/")[2]
+
+            data = {"Title": title, "Site": site, "Manga_url": link}
+            # Check existence of the title in the collection
+            existing_doc = collection.find_one(
+                {"$and": [{"Title": title}, {"Manga_url": link}]}
+            )
+            if not existing_doc:
+                data["Date_added"] = row["Date_added"]
+                bulk_operations.append(data)
+                print(Fore.RED, f"Inserted: {i}, {link}")
+                logs.append(f"{i}. {link} : New Manga Inserted")
+            else:
+                print(Fore.GREEN, f"{i}. {link} : Already exists.")
+        except:
+            continue
 
     if bulk_operations:
         collection.insert_many(bulk_operations)

@@ -1,6 +1,7 @@
 import base64
 import os
 import time
+from datetime import datetime
 from pathlib import Path
 
 from colorama import Fore
@@ -88,6 +89,28 @@ def get_record(collection_name, query, projection=None):
         projection = {"_id": False}
     collection = get_collection(collection_name)
     return collection.find_one(query, projection)
+
+
+def extract_details_from_url():
+    manga_details = []
+    urls = ['https://harimanga.com/manga/virus-king/']
+
+    for i, url in enumerate(urls):
+        try:
+            # url = record["Manga_url"]
+            current_datetime = datetime.now()
+            date_added = datetime(
+                current_datetime.year, current_datetime.month, current_datetime.day
+            )
+            if url:
+                print(Fore.RED, i, ": ", url)
+                manga_details.append(extract_meta_data(url, date_added))
+                time.sleep(1)
+            else:
+                print(Fore.GREEN, f"{i}: {url} is already present in the database.")
+        except Exception as e:
+            print(Fore.MAGENTA, f"Error occurred while extracting details for {url}: {str(e)}")
+    return manga_details
 
 
 def extract_details_from_urls():
