@@ -1,5 +1,4 @@
 import os
-import time
 from datetime import datetime
 from pathlib import Path
 
@@ -79,10 +78,13 @@ def insert_links_to_db(filepath="", collection=None, choice=0):
             logger.info(log)
 
 
-collection_name = get_collection("get_manga_links")
-# ! choice == '1' if reading links from csv files else choice == '0' if reading links from static list
-fileinput = os.path.join(Path(os.getcwd()).resolve().parent, 'csvfiles/links.csv')
+def manga_links_function():
+    collection_name = get_collection("get_manga_links")
+    # ! choice == '1' if reading links from csv files else choice == '0' if reading links from static list
+    fileinput = os.path.join(Path(os.getcwd()).resolve().parent, 'csvfiles/links.csv')
 
-insert_links_to_db(filepath=fileinput, collection=collection_name)
+    insert_links_to_db(filepath=fileinput, collection=collection_name)
 
-# delete_collection_records(collection_name)
+
+if __name__ == "__main__":
+    manga_links_function()

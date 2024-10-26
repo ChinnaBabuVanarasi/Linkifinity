@@ -4,8 +4,8 @@ import time
 from datetime import datetime
 from pathlib import Path
 
-from colorama import Fore
 import requests
+from colorama import Fore
 
 try:
     from common_functions import (
@@ -167,9 +167,12 @@ def insert_data(details_collection):
         logger.info(log)
 
 
-if __name__ == "__main__":
+def manga_details_function():
     manga_details_collection = get_collection("get_manga_details")
     insert_data(manga_details_collection)
-
     # collection_name = get_collection("get_manga_details")
     # delete_collection_records(collection_name)
+
+
+if __name__ == "__main__":
+    manga_details_function()

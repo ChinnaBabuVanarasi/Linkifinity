@@ -178,7 +178,11 @@ def insert_data(collection_var: str):
         chapter_insert_logger.exception(f"Error occurred in insert_data: {e}")
 
 
-if __name__ == "__main__":
+def manga_chapters_function():
     collection_name = "get_manga_chapters"
     # delete_collection_records(get_collection(collection_name))
     insert_data(collection_name)
+
+
+if __name__ == "__main__":
+    manga_chapters_function()

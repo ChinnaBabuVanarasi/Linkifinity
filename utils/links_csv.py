@@ -2,8 +2,8 @@ import os
 from datetime import datetime
 from pathlib import Path
 
-from colorama import Fore
 import pandas as pd
+from colorama import Fore
 
 try:
     from utils.common_functions import (
@@ -57,14 +57,19 @@ def insert_links_to_csv(links_list, collection):
             logger.info(log)
 
 
-collection_name = get_collection("get_csv_links")
-choice = 0
-# ! choice == '1' if reading links from csv files else choice == '0' if reading links from static list
-if choice == 1:
-    fileinput = os.path.join(Path(os.getcwd()).resolve().parent, 'csvfiles\links.csv')
-    links = get_links_from_csv(fileinput)
-else:
-    links = ["https://harimanga.com/manga/virus-king/", "https://harimanga.com/manga/the-magic-genius-of-the-marquis/",
-             "https://harimanga.com/manga/the-king-of-dead-souls/", "https://harimanga.com/manga/in-the-night-consumed-by-blades-i-walk-sword-fanatic-wanders-through-the-night/"]
-insert_links_to_csv(links, collection=collection_name)
-# delete_collection_records(collection_name)
+def csv_links_function(choice=0):
+    collection_name = get_collection("get_csv_links")
+    # ! choice == '1' if reading links from csv files else choice == '0' if reading links from static list
+    if choice == 1:
+        fileinput = os.path.join(Path(os.getcwd()).resolve().parent, 'csvfiles/links.csv')
+        links = get_links_from_csv(fileinput)
+    else:
+        links = ['https://manhuaus.org/manga/reincarnated-as-a-genius-prodigy-of-a-prestigious-family/',
+                 'https://manhuaus.org/manga/i-created-a-salvation-organization/',
+                 'https://manhuaus.org/manga/worthless-profession-dragon-tamer/'
+                 ]
+        insert_links_to_csv(links, collection=collection_name)
+
+
+if __name__ == "__main__":
+    csv_links_function(0)
