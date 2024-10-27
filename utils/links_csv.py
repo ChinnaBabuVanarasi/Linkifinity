@@ -64,10 +64,8 @@ def csv_links_function(choice=0):
         fileinput = os.path.join(Path(os.getcwd()).resolve().parent, 'csvfiles/links.csv')
         links = get_links_from_csv(fileinput)
     else:
-        links = ['https://manhuaus.org/manga/reincarnated-as-a-genius-prodigy-of-a-prestigious-family/',
-                 'https://manhuaus.org/manga/i-created-a-salvation-organization/',
-                 'https://manhuaus.org/manga/worthless-profession-dragon-tamer/'
-                 ]
+        links = ['https://manhuaus.org/manga/admission-is-a-waste-of-time/',
+                 'https://kunmanga.com/manga/return-of-the-disaster-class-hero/']
         insert_links_to_csv(links, collection=collection_name)
 
 
