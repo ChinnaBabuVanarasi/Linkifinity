@@ -65,8 +65,10 @@ def csv_links_function(choice=0):
         links = get_links_from_csv(fileinput)
     else:
         links = ['https://manhuaus.org/manga/admission-is-a-waste-of-time/',
-                 'https://kunmanga.com/manga/return-of-the-disaster-class-hero/']
-        insert_links_to_csv(links, collection=collection_name)
+                 'https://kunmanga.com/manga/return-of-the-disaster-class-hero/',
+                 'https://manhuaus.com/manga/growth-type-superhero/',
+                 'https://kunmanga.com/manga/taming-master/']
+    insert_links_to_csv(links, collection=collection_name)
 
 
 if __name__ == "__main__":

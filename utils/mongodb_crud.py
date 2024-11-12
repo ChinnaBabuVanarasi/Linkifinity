@@ -1,5 +1,5 @@
-import os
-from pathlib import Path
+import pandas as pd
+
 from database_connection import get_collection
 
 
@@ -56,5 +56,8 @@ urls = ['https://kunmanga.com/manga/pupillary-master/', 'https://kunmanga.com/ma
         'https://harimanga.com/manga/voidman/', 'https://harimanga.com/manga/i-became-the-head-of-the-family/',
         'https://harimanga.com/manga/shadows-resurgence/']
 # find_and_delete_by_url(collection_name=chapters_col)
-delete_one_by_url(collection_name=manga_links_col, urls=urls)
+# delete_one_by_url(collection_name=manga_links_col, urls=urls)
 # delete_all(chapters_col)
+df = get_records_in_col(links_col)
+df2 = pd.DataFrame(df)
+df2.to_csv('all_csv_links_db.csv', index=False)
