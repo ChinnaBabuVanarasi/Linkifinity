@@ -118,12 +118,13 @@ def get_chapters(manga_url, current_chapter, manga_title) -> list:
     return chapter_meta_details
 
 
-def extract_details_from_url() -> List[Dict[str, str]]:
+def extract_details_from_url(records) -> List[Dict[str, str]]:
     try:
-        records = read_records_from_db()
+
         manga_details = []
         for i, record in enumerate(records):
             url: str = record["Manga_url"]
+
             if not isinstance(url, str) or not url.startswith("http"):
                 print(f"Invalid URL: {url}")
                 continue
@@ -166,22 +167,46 @@ def read_records_from_db():
         return []
 
 
-def insert_data(collection_var: str):
+# def insert_data(collection_var: str):
+#     try:
+#
+#         records = records = read_records_from_db()
+#         manga_details = extract_details_from_url(records)
+#         mongodb_insertion(
+#             manga_details=manga_details,
+#             collection_var=collection_var,
+#             insert_logger=chapter_insert_logger,
+#         )
+#     except Exception as e:
+#         chapter_insert_logger.exception(f"Error occurred in insert_data: {e}")
+def insert_data_in_batches(collection_var: str, batch_size=20):
     try:
-        manga_details = extract_details_from_url()
-        mongodb_insertion(
-            manga_details=manga_details,
-            collection_var=collection_var,
-            insert_logger=chapter_insert_logger,
-        )
+        records = read_records_from_db()
+        total_records = len(records)
+        start_index = 0
+
+        while start_index < total_records:
+            end_index = min(start_index + batch_size, total_records)
+            batch_records = records[start_index:end_index]
+
+            manga_details = extract_details_from_url(batch_records)
+            mongodb_insertion(
+                manga_details=manga_details,
+                collection_var=collection_var,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+                insert_logger=chapter_insert_logger,
+            )
+            print(f'batch: {start_index} - {end_index} completed...')
+
+            start_index += batch_size
+
     except Exception as e:
-        chapter_insert_logger.exception(f"Error occurred in insert_data: {e}")
+        chapter_insert_logger.exception(f"Error occurred in insert_data_in_batches: {e}")
 
 
 def manga_chapters_function():
     collection_name = "get_manga_chapters"
     # delete_collection_records(get_collection(collection_name))
-    insert_data(collection_name)
+    insert_data_in_batches(collection_name, 10)
 
 
 if __name__ == "__main__":

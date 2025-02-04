@@ -26,3 +26,23 @@ def run_manga_funcs(choice=0):
 
 choice_to_run = 1
 run_manga_funcs(choice_to_run)
+
+'''
+from seleniumwire import webdriver  # Import from seleniumwire
+
+# Create a new instance of the Firefox driver
+driver = webdriver.Firefox()
+
+# Go to the Google home page
+driver.get('https://www.google.com')
+
+# Access requests via the `requests` attribute
+for request in driver.requests:
+    if request.response:
+        print(
+            request.url,
+            request.response.status_code,
+            request.response.headers['Content-Type']
+        )
+
+'''
