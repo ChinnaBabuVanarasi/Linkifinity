@@ -6,21 +6,20 @@ from colorama import Fore
 
 try:
     from common_functions import (
-        get_page_source,
         setup_logging,
         delete_collection_records,
         mongodb_insertion,
     )
     from database_connection import get_collection, close_database_connection
+    from get_page_source import get_page_source
 except ModuleNotFoundError:
     from utils.common_functions import (
-
-        get_page_source,
         setup_logging,
         delete_collection_records,
         mongodb_insertion,
     )
     from utils.database_connection import get_collection, close_database_connection
+    from utils.get_page_source import get_page_source
 
 chapter_details_logger = setup_logging(filename="chapter_details_logger")
 chapter_urls_logger = setup_logging(filename="chapter_urls_logger")

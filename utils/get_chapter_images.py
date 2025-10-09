@@ -5,7 +5,6 @@ import requests
 
 try:
     from common_functions import (
-        get_page_source,
         setup_logging,
         delete_collection_records,
         mongodb_insertion,
@@ -13,8 +12,6 @@ try:
     from database_connection import get_collection, close_database_connection
 except ModuleNotFoundError:
     from utils.common_functions import (
-
-        get_page_source,
         setup_logging,
         delete_collection_records,
         mongodb_insertion,

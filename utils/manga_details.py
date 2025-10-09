@@ -9,19 +9,18 @@ from colorama import Fore
 
 try:
     from common_functions import (
-        get_page_source,
         setup_logging,
         delete_collection_records,
     )
     from database_connection import get_collection
+    from get_page_source import get_page_source
 except ModuleNotFoundError:
     from utils.common_functions import (
-        get_page_source,
         setup_logging,
         delete_collection_records,
     )
     from utils.database_connection import get_collection
-
+    from utils.get_page_source import get_page_source
 IMAGE_CONSTANT = '/9j/4QVfRXhpZgAASUkqAAgAAAAMAAABAwABAAAALAEAAAEBAwABAAAAwgEAAAIBAwADAAAAngAAAAYBAwABAAAAAgAAABIBAwAB'
 
 

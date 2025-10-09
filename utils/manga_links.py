@@ -8,18 +8,17 @@ from colorama import Fore
 try:
     from utils.common_functions import (
         delete_collection_records,
-        get_page_source,
         setup_logging,
     )
     from utils.database_connection import get_collection
+    from utils.get_page_source import get_page_source
 except ModuleNotFoundError:
     from common_functions import (
         delete_collection_records,
-        get_page_source,
         setup_logging,
     )
     from database_connection import get_collection
-
+    from get_page_source import get_page_source
 
 def get_links_from_csv(filepath):
     df = pd.read_csv(filepath)
