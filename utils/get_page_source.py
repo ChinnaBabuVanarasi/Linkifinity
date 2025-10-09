@@ -8,9 +8,14 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, WebDriverException
 
-from utils.common_functions import setup_logging
-from utils.database_connection import get_collection
-
+try:
+    from common_functions import (
+        setup_logging,
+    )
+except ModuleNotFoundError:
+    from utils.common_functions import (
+        setup_logging,
+    )
 # Initialize unified logger
 logger = setup_logging(__name__)
 
