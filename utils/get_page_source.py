@@ -57,11 +57,11 @@ def get_page_source(manga_url: str, timeout: int = 15):
     options.page_load_strategy = "eager"
 
     driver = webdriver.Chrome(options=options)
-    collection = get_collection("get_page_source")
 
     try:
         try:
             driver.get(manga_url)
+            time.sleep(5)
         except WebDriverException as e:
             if "ERR_NAME_NOT_RESOLVED" in str(e):
                 # Identify which site key this URL belongs to
@@ -77,6 +77,7 @@ def get_page_source(manga_url: str, timeout: int = 15):
                         new_url = f"https://{active}/{manga_path}"
                         logger.info(f"[{domain_key}] Retrying with {new_url}")
                         driver.get(new_url)
+                        time.sleep(5)
                         manga_url = new_url  # update URL for DB entry
                     else:
                         raise Exception(f"[{domain_key}] No available mirror found.")
@@ -86,9 +87,6 @@ def get_page_source(manga_url: str, timeout: int = 15):
             else:
                 raise
 
-        # Site-specific wait or delay
-        if "kunmanga" in manga_url:
-            time.sleep(5)
 
         # Wait for common elements across most manga sites
         WebDriverWait(driver, timeout).until(
@@ -99,14 +97,6 @@ def get_page_source(manga_url: str, timeout: int = 15):
 
         html = driver.page_source
         soup = BeautifulSoup(html, "html.parser")
-
-        # Store in DB if not already present
-        if not collection.find_one({"manga_url": manga_url}):
-            collection.insert_one({"manga_url": manga_url, "page_source": str(soup)})
-            logger.success(f"Inserted page source for {manga_url}")
-        else:
-            logger.info(f"Page source already exists for {manga_url}")
-
         return soup
 
     except TimeoutException:

@@ -72,4 +72,4 @@ def csv_links_function(choice=0):
 
 
 if __name__ == "__main__":
-    csv_links_function(0)
+    csv_links_function(1)

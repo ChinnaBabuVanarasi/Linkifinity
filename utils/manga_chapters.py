@@ -64,9 +64,9 @@ def get_chapters(manga_url, current_chapter, manga_title) -> list:
 
     chapters_container = soup.find("div", class_="page-content-listing.single-page")
     if chapters_container is None:
-        chapters = soup.findAll("li", class_="wp-manga-chapter")
+        chapters = soup.find_all("li", class_="wp-manga-chapter")
     else:
-        chapters = chapters_container.findAll("li", class_="wp-manga-chapter")
+        chapters = chapters_container.find_all("li", class_="wp-manga-chapter")
     chapter_index = 0
     if current_chapter == 0:
         chapter_index = 0
